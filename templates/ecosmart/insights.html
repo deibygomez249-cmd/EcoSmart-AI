@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Insights{% endblock %}
+{% block page_title %}Smart Insights{% endblock %}
+{% block content %}
+
+{% if error %}
+<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> {{ error }}</div>
+{% else %}
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="dashboard-card h-100">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark rounded-circle me-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-clock-history text-accent-blue fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Peak Consumption Hour</h5>
+                    <p class="text-muted-custom small mb-0">Based on historical averages</p>
+                </div>
+            </div>
+            <p class="text-white fs-5">The household consumes the most energy at <strong class="text-accent-blue">{{ data.peak_hour }}:00</strong> on average.</p>
+            <p class="text-muted-custom small">Recommendation: Shift high-power tasks (laundry, dishwashing) away from this hour to balance the load.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="dashboard-card h-100">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark rounded-circle me-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-calendar-week text-accent-purple fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Peak Consumption Day</h5>
+                    <p class="text-muted-custom small mb-0">Weekly usage pattern</p>
+                </div>
+            </div>
+            <p class="text-white fs-5">Energy usage is highest on <strong class="text-accent-purple">{{ data.peak_day }}</strong>.</p>
+            <p class="text-muted-custom small">Recommendation: Monitor your consumption habits on this day. It may be related to home activities or weather conditions.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="dashboard-card h-100">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark rounded-circle me-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-cloud-sun text-accent-green fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Weather Impact</h5>
+                </div>
+            </div>
+            <p class="text-muted-custom">{{ data.weather_insight }}</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="dashboard-card h-100">
+            <div class="d-flex align-items-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark rounded-circle me-3" style="width: 60px; height: 60px;">
+                    <i class="bi bi-sun text-accent-red fs-3"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">Day vs Night Usage</h5>
+                </div>
+            </div>
+            <p class="text-white fs-5 mb-2">Day (8AM-6PM): <strong>{{ data.day_avg }} Wh</strong></p>
+            <p class="text-white fs-5">Night (6PM-8AM): <strong>{{ data.night_avg }} Wh</strong></p>
+            <p class="text-muted-custom small mt-2">Most of the energy baseline is maintained throughout the night (standby power, refrigeration, etc).</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

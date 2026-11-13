@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+
+{% if error %}
+<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> {{ error }}</div>
+{% else %}
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="dashboard-card position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-3">Total Records</h6>
+            <h2 class="fw-bold mb-0">{{ data.records }}</h2>
+            <i class="bi bi-database position-absolute top-50 end-0 translate-middle-y me-3 text-accent-blue opacity-50" style="font-size: 2rem;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-3">Avg Consumption</h6>
+            <h2 class="fw-bold mb-0">{{ data.avg }} <span class="fs-6 text-muted-custom">Wh</span></h2>
+            <i class="bi bi-graph-down position-absolute top-50 end-0 translate-middle-y me-3 text-accent-green opacity-50" style="font-size: 2rem;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-3">Max Peak</h6>
+            <h2 class="fw-bold mb-0">{{ data.max }} <span class="fs-6 text-muted-custom">Wh</span></h2>
+            <i class="bi bi-arrow-up-circle position-absolute top-50 end-0 translate-middle-y me-3 text-accent-red opacity-50" style="font-size: 2rem;"></i>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-3">Min Base</h6>
+            <h2 class="fw-bold mb-0">{{ data.min }} <span class="fs-6 text-muted-custom">Wh</span></h2>
+            <i class="bi bi-arrow-down-circle position-absolute top-50 end-0 translate-middle-y me-3 text-accent-purple opacity-50" style="font-size: 2rem;"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="dashboard-card pb-4">
+            <h5 class="fw-bold mb-4"><i class="bi bi-house-door text-accent-green"></i> Consumption by zone</h5>
+            <div class="row g-3">
+                {% for zone in zones %}
+                <div class="col">
+                    <div class="zone-card {% if zone.is_outdoor %}outdoor{% endif %}">
+                        <div class="zone-title">{{ zone.name }}</div>
+                        <div class="zone-sub">
+                            {{ zone.temp }}°C · {{ zone.hum }}% RH
+                            {% if zone.is_outdoor %}
+                                <br>Weather inputs
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-activity text-accent-green"></i> Energy Consumption Timeline</h5>
+                <span class="badge bg-dark border border-secondary text-muted-custom">First 1000 records</span>
+            </div>
+            <img src="data:image/png;base64,{{ data.plot_timeline }}" class="img-fluid rounded w-100">
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="dashboard-card h-100 d-flex flex-column">
+            <h5 class="mb-3 fw-bold"><i class="bi bi-bar-chart text-accent-blue"></i> Distribution</h5>
+            <div class="flex-grow-1 d-flex align-items-center">
+                <img src="data:image/png;base64,{{ data.plot_dist }}" class="img-fluid rounded w-100">
+            </div>
+            <p class="text-muted-custom small mt-2 mb-0 text-center">Most household consumption falls between 40Wh and 150Wh.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Prediction Models{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-graph-up-arrow"></i> Model Training & Evaluation</h2>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body text-center">
+        <p>Train three regression models and compare their performance.</p>
+        <form method="POST">
+            <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-play-fill"></i> Train Models</button>
+        </form>
+    </div>
+</div>
+
+{% if results %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-secondary text-white">Comparison Results</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Model</th>
+                    <th>MAE</th>
+                    <th>RMSE</th>
+                    <th>R²</th>
+                    <th>Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, metrics in results.items() %}
+                <tr class="{% if name == best_model %}table-success fw-bold{% endif %}">
+                    <td>{{ name }}</td>
+                    <td>{{ metrics.mae }}</td>
+                    <td>{{ metrics.rmse }}</td>
+                    <td>{{ metrics.r2 }}</td>
+                    <td>{{ metrics.time }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="alert alert-info mt-3">
+            <i class="bi bi-info-circle"></i> The best model based on RMSE is <strong>{{ best_model }}</strong>.
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

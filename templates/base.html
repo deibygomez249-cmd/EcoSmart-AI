@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart AI - {% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg-main: #1e1e2f;
+            --bg-sidebar: #151524;
+            --bg-card: #27273a;
+            --text-primary: #ffffff;
+            --text-muted: #8b8b9f;
+            --accent-blue: #4facfe;
+            --accent-green: #00e676;
+            --accent-purple: #9d4edd;
+            --accent-red: #ff4b4b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background-color: var(--bg-sidebar);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .sidebar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 30px;
+            padding-left: 10px;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            padding: 12px 15px;
+            font-weight: 500;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            margin-bottom: 5px;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 30px 40px;
+            max-width: calc(100vw - 260px);
+            overflow-x: hidden;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
+        }
+
+        .dashboard-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            height: 100%;
+        }
+
+        .form-control, .form-select {
+            background-color: #1e1e2f;
+            border: 1px solid #3f3f5a;
+            color: var(--text-primary);
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #1e1e2f;
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 0.25rem rgba(79, 172, 254, 0.25);
+        }
+        .form-label { color: var(--text-muted); font-size: 0.85rem; }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+        .table-responsive::-webkit-scrollbar { height: 8px; }
+        .table-responsive::-webkit-scrollbar-thumb { background-color: #444; border-radius: 4px; }
+        .table { width: 100% !important; margin-bottom: 0; }
+        .table th, .table td { white-space: nowrap; }
+
+        .table-dark-custom { color: var(--text-primary); }
+        .table-dark-custom th { color: var(--text-muted); border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-weight: 500; }
+        .table-dark-custom td { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .table-dark-custom tr:hover { background-color: rgba(255, 255, 255, 0.02); }
+
+        .btn-primary-custom { background: var(--accent-blue); border: none; color: white; font-weight: 600; }
+        .btn-primary-custom:hover { background: #3a9be0; color: white; }
+        
+        .btn-success-custom { background: var(--accent-green); border: none; color: #000; font-weight: 600; }
+        .btn-success-custom:hover { background: #00c765; color: #000; }
+
+        .text-muted-custom { color: var(--text-muted); }
+        .text-accent-green { color: var(--accent-green); }
+        .text-accent-blue { color: var(--accent-blue); }
+        .text-accent-purple { color: var(--accent-purple); }
+        .text-accent-red { color: var(--accent-red); }
+
+        .zone-card { background-color: #2d2d44; border-radius: 12px; padding: 15px 20px; height: 100%; border: 1px solid #3f3f5a; }
+        .zone-card.outdoor { background-color: #3a3020; border: 1px solid #5a4520; }
+        .zone-title { font-weight: 600; font-size: 1rem; color: white; margin-bottom: 4px;}
+        .zone-sub { font-size: 0.8rem; color: #b0b0c0; }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <nav class="sidebar">
+        <a class="sidebar-brand" href="{{ url_for('ecosmart_concepts') }}">
+            <i class="bi bi-lightning-charge-fill text-accent-green"></i> EcoSmart AI
+        </a>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link {% if 'concepts' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_concepts') }}">
+                    <i class="bi bi-grid-1x2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'devices' in request.path %}active{% endif %}" href="{{ url_for('devices') }}">
+                    <i class="bi bi-plug"></i> My Devices
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'explorer' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_data_explorer') }}">
+                    <i class="bi bi-table"></i> Data Explorer
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'application' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_application') }}">
+                    <i class="bi bi-cpu"></i> Prediction
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'metrics' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_metrics') }}">
+                    <i class="bi bi-bar-chart-line"></i> Model Lab
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'anomalies' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_anomalies') }}">
+                    <i class="bi bi-exclamation-triangle"></i> Anomalies
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if 'insights' in request.path %}active{% endif %}" href="{{ url_for('ecosmart_insights') }}">
+                    <i class="bi bi-lightbulb"></i> Insights
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-content w-100">
+        <div class="top-header">
+            <h4 class="mb-0 fw-bold">{% block page_title %}{% endblock %}</h4>
+            <div class="d-flex align-items-center gap-3">
+                {% if current_user.is_authenticated %}
+                    <span class="text-white small fw-bold"><i class="bi bi-person-circle text-accent-blue fs-5 align-middle me-1"></i> {{ current_user.username }}</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-sm btn-primary-custom">Login</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

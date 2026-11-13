@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Insights & Recommendations{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-lightbulb"></i> Insights & Recommendations</h2>
+
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> Note: These are descriptive insights based on historical data and statistical anomalies. They do not guarantee monetary savings or identify specific faulty appliances.
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Energy Efficiency Tips</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="bi bi-check-circle-fill text-success"></i> Unplug devices when not in use to reduce standby consumption.</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle-fill text-success"></i> Use energy-efficient appliances (A++ rating or higher).</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle-fill text-success"></i> Schedule high-consumption activities during off-peak hours.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Data Interpretation</h5>
+                <p>Statistical anomalies detected by the Isolation Forest algorithm represent unusual combinations of environmental conditions and energy usage. They should be investigated manually to rule out sensor errors or actual equipment faults.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

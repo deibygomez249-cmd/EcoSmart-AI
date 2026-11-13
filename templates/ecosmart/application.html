@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Application{% endblock %}
+{% block page_title %}Model Control Center{% endblock %}
+{% block content %}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="dashboard-card h-100 text-center d-flex flex-column justify-content-center">
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-dark rounded-circle mb-3" style="width: 70px; height: 70px;">
+                    <i class="bi bi-gear-fill text-accent-green fs-2"></i>
+                </div>
+                <h5 class="fw-bold">Model Training</h5>
+                {% if has_models %}
+                    <p class="text-muted-custom small mb-1">Last trained: {{ metadata.get('trained_at', 'Unknown') }}</p>
+                    <span class="badge bg-success bg-opacity-25 text-accent-green border border-success mb-3">
+                        Best Model: {{ metadata.get('regression', {}).get('best', 'N/A') }}
+                    </span>
+                {% else %}
+                    <p class="text-muted-custom small mb-3">Train the ML models to enable predictions and clustering.</p>
+                {% endif %}
+            </div>
+            
+            <form method="POST">
+                <input type="hidden" name="action" value="train">
+                <button type="submit" class="btn btn-success-custom w-100 py-2">
+                    <i class="bi bi-play-circle"></i> Train Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="dashboard-card h-100">
+            <h5 class="fw-bold mb-4"><i class="bi bi-magic text-accent-blue"></i> Predict Consumption</h5>
+            
+            {% if not has_models %}
+                <div class="alert alert-dark border-secondary text-muted-custom">Please train the models first.</div>
+            {% else %}
+                <form method="POST">
+                    <input type="hidden" name="action" value="predict">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Indoor Temp T1 (°C)</label>
+                            <input type="number" step="0.1" name="T1" class="form-control" value="20.0">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Indoor Humidity RH_1 (%)</label>
+                            <input type="number" step="0.1" name="RH_1" class="form-control" value="40.0">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Outdoor Temp (°C)</label>
+                            <input type="number" step="0.1" name="T_out" class="form-control" value="10.0">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Wind Speed (m/s)</label>
+                            <input type="number" step="0.1" name="Windspeed" class="form-control" value="2.0">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                        <i class="bi bi-lightning-charge"></i> Calculate Prediction
+                    </button>
+                </form>
+                
+                {% if prediction %}
+                    <div class="mt-4 p-4 rounded text-center" style="background: rgba(79, 172, 254, 0.1); border: 1px solid var(--accent-blue);">
+                        <h6 class="small fw-bold text-muted-custom text-uppercase">Predicted Energy Consumption</h6>
+                        <h1 class="fw-bold mb-0 text-accent-blue">{{ prediction }} <span class="fs-4">Wh</span></h1>
+                    </div>
+                {% endif %}
+                {% if error %}<div class="alert alert-danger mt-3">{{ error }}</div>{% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if clustering_plot %}
+<div class="row">
+    <div class="col-12">
+        <div class="dashboard-card">
+            <h5 class="fw-bold mb-3"><i class="bi bi-diagram-3 text-accent-purple"></i> Usage Profiles (K-Means Clustering)</h5>
+            <img src="data:image/png;base64,{{ clustering_plot }}" class="img-fluid rounded w-100">
+            <p class="text-muted-custom small mt-2 mb-0 text-center">The K-Means algorithm groups energy behavior into 3 distinct profiles based on outdoor temperature and consumption.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

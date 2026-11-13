@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="card border-0 shadow-sm mb-4 bg-success text-white">
+    <div class="card-body p-5">
+        <h1 class="display-5 fw-bold">Welcome to EcoSmart AI</h1>
+        <p class="lead">Intelligent analysis and prediction of energy consumption using Machine Learning.</p>
+    </div>
+</div>
+
+{% if error %}
+<div class="alert alert-danger"><i class="bi bi-exclamation-triangle"></i> {{ error }}</div>
+{% else %}
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 text-center h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Total Records</h6>
+                <h2 class="fw-bold">{{ info.rows }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 text-center h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Avg. Consumption</h6>
+                <h2 class="fw-bold">{{ avg }} Wh</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 text-center h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Max Consumption</h6>
+                <h2 class="fw-bold text-danger">{{ max }} Wh</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card shadow-sm border-0 text-center h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Min Consumption</h6>
+                <h2 class="fw-bold text-success">{{ min }} Wh</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

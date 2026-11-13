@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Anomalies{% endblock %}
+{% block page_title %}Anomaly Detection Lab{% endblock %}
+{% block content %}
+
+<!-- Formulario de configuración -->
+<div class="dashboard-card mb-4">
+    <form method="POST" class="row g-3 align-items-center">
+        <div class="col-md-8">
+            <label class="form-label fw-bold text-white">Contamination Rate (Expected Anomaly Percentage)</label>
+            <input type="text" name="contamination" class="form-control" value="{{ contamination }}">
+            <div class="form-text text-muted-custom small">Adjust this to change the model's sensitivity. Default is 0.05 (5%).</div>
+        </div>
+        <div class="col-md-4 text-end">
+            <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                <i class="bi bi-arrow-repeat"></i> Recalculate Anomalies
+            </button>
+        </div>
+    </form>
+</div>
+
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% elif data %}
+
+<!-- Tarjetas de métricas -->
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="dashboard-card text-center d-flex flex-column justify-content-center position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-2">Total Anomalies Detected</h6>
+            <h1 class="fw-bold mb-0 text-accent-red">{{ data.total_anom }}</h1>
+            <p class="text-muted-custom small mt-2 mb-0">out of 19735 records ({{ data.percentage }}%)</p>
+            <i class="bi bi-exclamation-triangle position-absolute top-50 end-0 translate-middle-y me-3 text-accent-red opacity-25" style="font-size: 3rem;"></i>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card text-center d-flex flex-column justify-content-center position-relative">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-2">Avg Consumption (Anomalies vs Normal)</h6>
+            <h3 class="fw-bold mb-0 text-white">
+                <span class="text-accent-red">{{ data.avg_anom_cons }}</span> Wh 
+                <span class="fs-5 text-muted-custom mx-2">vs</span> 
+                <span class="text-accent-blue">{{ data.avg_normal_cons }}</span> Wh
+            </h3>
+            <p class="text-muted-custom small mt-2 mb-0">Anomalies consume significantly more energy</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card text-center d-flex flex-column justify-content-center">
+            <h6 class="text-muted-custom small fw-bold text-uppercase mb-2">Highest Peak Anomaly</h6>
+            <h3 class="fw-bold mb-0 text-accent-green">{{ data.max_anom_val }} <span class="fs-6 text-muted-custom">Wh</span></h3>
+            <p class="text-muted-custom small mt-2 mb-0">Recorded on {{ data.max_anom_date }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Gráfica y Tabla -->
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="dashboard-card h-100">
+            <h5 class="fw-bold mb-3"><i class="bi bi-activity text-accent-blue"></i> Anomaly Timeline (First 1000 records)</h5>
+            <img src="data:image/png;base64,{{ data.plot_url }}" class="img-fluid rounded w-100">
+            <p class="text-muted-custom small mt-3 mb-0">Red crosses indicate anomalous energy spikes detected by the Isolation Forest algorithm.</p>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="dashboard-card h-100">
+            <h5 class="fw-bold mb-3"><i class="bi bi-table text-accent-red"></i> Detected Anomalies (Top 15)</h5>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                {{ data.table | safe }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
