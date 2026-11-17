@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSmart AI - Project Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; color: #333; }
+        .hero { background-color: #0b2b21; color: white; padding: 60px 0; text-align: center; }
+        .content-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        h2 { color: #0b2b21; border-bottom: 2px solid #00e676; padding-bottom: 10px; margin-bottom: 20px;}
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1 class="display-4 fw-bold">EcoSmart AI</h1>
+        <p class="lead">Smart Home Energy Analysis and Machine Learning System</p>
+        <a href="{{ url_for('login') }}" class="btn btn-success btn-lg mt-3 px-5 shadow">Access the Application</a>
+    </div>
+
+    <div class="container my-5">
+        
+        <!-- 1. Title & 2. Problem Statement -->
+        <div class="content-section">
+            <h2>1. Project Title & Problem Statement</h2>
+            <p><strong>Title:</strong> EcoSmart AI: Smart Home Energy Analysis and Prediction System.</p>
+            <p><strong>Problem:</strong> The increase in household energy consumption and the lack of intuitive tools for users to understand their usage patterns. Users receive high electricity bills without knowing which appliances cause the spikes or how to optimize their consumption.</p>
+            <p><strong>Justification:</strong> This system provides an intelligent web platform that not only allows users to register their devices but also uses Machine Learning (Regression, Clustering, Anomaly Detection) to predict consumption, detect abnormal energy spikes, and provide actionable insights.</p>
+        </div>
+
+        <!-- 3. Objectives -->
+        <div class="content-section">
+            <h2>2. Objectives</h2>
+            <p><strong>General Objective:</strong> Develop a private web-based intelligent system using Python and Machine Learning to analyze, predict, and monitor smart home energy consumption.</p>
+            <ul>
+                <li><strong>Specific Objective 1:</strong> Preprocess the UCI Appliances Energy Prediction dataset (19,735 records).</li>
+                <li><strong>Specific Objective 2:</strong> Train and evaluate ML models (Random Forest, Isolation Forest, K-Means) for prediction and anomaly detection.</li>
+                <li><strong>Specific Objective 3:</strong> Build a secure Flask web application with user authentication and device management.</li>
+                <li><strong>Specific Objective 4:</strong> Deploy the system on Render and validate its real-world usability.</li>
+            </ul>
+        </div>
+
+        <!-- 4. Methodology (CRISP-ML) -->
+        <div class="content-section">
+            <h2>3. Methodology (CRISP-ML)</h2>
+            <ul>
+                <li><strong>1. Business Understanding:</strong> Identifying the need for household energy management and user device tracking.</li>
+                <li><strong>2. Data Understanding:</strong> Exploring the 19,735 records dataset, identifying variables (Temperature, Humidity, Appliances).</li>
+                <li><strong>3. Data Preparation:</strong> Handling missing values, chronological split (80/20), and scaling (StandardScaler).</li>
+                <li><strong>4. Modeling:</strong> Training Linear Regression, Random Forest, HistGradientBoosting, Isolation Forest, and K-Means.</li>
+                <li><strong>5. Evaluation:</strong> Using MAE, RMSE, R2, Silhouette score, and Confusion Matrices.</li>
+                <li><strong>6. Deployment:</strong> Implementing the Flask app with SQLite database, deployed on Render.</li>
+            </ul>
+        </div>
+
+        <!-- 5. Deliverables & Links -->
+        <div class="content-section">
+            <h2>4. Project Deliverables & Evidence</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="URL_DE_TU_REPOSITORIO_GITHUB" target="_blank" class="btn btn-outline-dark w-100 py-3">
+                        <i class="bi bi-github"></i> GitHub Repository
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="URL_DE_TU_INFORME_PDF_EN_GITHUB" target="_blank" class="btn btn-outline-danger w-100 py-3">
+                        <i class="bi bi-file-pdf"></i> Technical Report (PDF)
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="URL_DE_TU_VIDEO_YOUTUBE_O_DRIVE" target="_blank" class="btn btn-outline-primary w-100 py-3">
+                        <i class="bi bi-play-btn"></i> 20-Min Presentation Video
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. References -->
+        <div class="content-section">
+            <h2>5. Bibliographic References</h2>
+            <ul class="small text-muted">
+                <li>Candanedo, L. M., Feldheim, V., & Deramaix, D. (2017). Data driven prediction models of energy use of appliances in a low-energy house. Energy and Buildings, 140, 81-97.</li>
+                <li>Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.</li>
+                <li>Studer, S., et al. (2021). Towards CRISP-ML(Q): A Machine Learning Process Model with Quality Assurance Methodology. Machine Learning and Knowledge Extraction.</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>|

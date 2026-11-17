@@ -24,7 +24,12 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# --- RUTAS DE AUTENTICACIÓN ---
+
+@app.route('/')
+def landing():
+    # Esta es la página principal que verá el profesor (Documentación PGC)
+    return render_template('landing.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -53,6 +58,7 @@ def login():
         
         if user and user.check_password(password):
             login_user(user)
+            # Al loguearse, va directo al Dashboard
             return redirect(url_for('ecosmart_concepts'))
         else:
             flash('Invalid username or password.', 'danger')
@@ -62,13 +68,10 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    # Al salir, regresa a la página pública
+    return redirect(url_for('landing'))
 
-# --- RUTAS PRINCIPALES (Protegidas) ---
-
-@app.route('/')
-def home():
-    return redirect(url_for('ecosmart_concepts'))
+# --- RUTAS PRINCIPALES DEL SISTEMA (Protegidas con Login) ---
 
 @app.route('/ecosmart/concepts')
 @login_required
@@ -177,7 +180,6 @@ def ecosmart_insights():
     except Exception as e:
         return render_template('ecosmart/insights.html', error=str(e))
 
-# --- RUTAS DE DISPOSITIVOS ---
 
 @app.route('/devices')
 @login_required
@@ -187,7 +189,6 @@ def devices():
     total_devices = len(user_devices)
     total_consumption = sum(d.consumption for d in user_devices)
     
-    # Calcular el porcentaje de consumo de cada dispositivo
     for d in user_devices:
         if total_consumption > 0:
             d.percentage = round((d.consumption / total_consumption) * 100, 1)
